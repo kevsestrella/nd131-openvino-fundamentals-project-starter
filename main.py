@@ -172,8 +172,8 @@ def infer_on_stream(args, client):
         client.publish("person", json.dumps({"count": current_count}))
 
         ### TODO: Send the frame to the FFMPEG server ###
-        sys.stdout.buffer.write(frame)
-        sys.stdout.flush()
+        # sys.stdout.buffer.write(frame)
+        # sys.stdout.flush()
         ### TODO: Write an output image if `single_image_mode` ###
 
     # Release the out writer, capture, and destroy any OpenCV windows
