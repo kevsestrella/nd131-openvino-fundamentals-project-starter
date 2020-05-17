@@ -1,4 +1,4 @@
-# gProject Write-Up
+# Project Write-Up
 
 ## Explaining Custom Layers
 
