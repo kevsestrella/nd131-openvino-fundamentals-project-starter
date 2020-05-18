@@ -41,7 +41,14 @@ class Network:
             self.plugin.add_extension(cpu_extension, device)
 
         # Read the IR as a IENetwork
-        self.network = IENetwork(model=model_xml, weights=model_bin)
+        self.network = IENetwork(model=model, weights=model_bin)
+
+        supported_layers = self.plugin.query_network(network=self.network, device_name=device)
+        unsupported_layers = [l for l in self.network.layers.keys() if l not in supported_layers]
+
+        if len(unsupported_layers):
+            print(f"Unsupported layers: {unsupported_layers}")
+            exit(1)
 
         # Load the IENetwork into the plugin
         self.exec_network = self.plugin.load_network(self.network, device)

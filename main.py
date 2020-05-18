@@ -108,11 +108,14 @@ def infer_on_stream(args, client):
     prob_threshold = args.prob_threshold
 
     ### TODO: Load the model through `infer_network` ###
-    infer_network.load_model(args.model)
+    infer_network.load_model(args.model, args.device, args.cpu_extension)
 
     ### TODO: Handle the input stream ###
+    is_image = False
     if args.input == "CAM":
         args.input = 0
+    elif args.input.endswith(".jpg") or args.input.endswith(".bmp"):
+        is_image = True
 
     cap = cv2.VideoCapture(args.input)
     cap.open(args.input)
@@ -127,6 +130,7 @@ def infer_on_stream(args, client):
     current_count = 0
     last_count = 0
     duration = 0
+
     while cap.isOpened():
         ### TODO: Read from the video capture ###
         flag, frame = cap.read()
@@ -135,7 +139,6 @@ def infer_on_stream(args, client):
         key_pressed = cv2.waitKey(60)
 
         ### TODO: Pre-process the image as needed ###
-        print(input_shape)
         preprocessed_frame = cv2.resize(frame, (input_shape[3], input_shape[2]))
         preprocessed_frame = preprocessed_frame.transpose((2,0,1))
         preprocessed_frame = preprocessed_frame.reshape(1, *preprocessed_frame.shape)
@@ -172,9 +175,12 @@ def infer_on_stream(args, client):
         client.publish("person", json.dumps({"count": current_count}))
 
         ### TODO: Send the frame to the FFMPEG server ###
-        # sys.stdout.buffer.write(frame)
-        # sys.stdout.flush()
+        sys.stdout.buffer.write(frame)
+        sys.stdout.flush()
         ### TODO: Write an output image if `single_image_mode` ###
+
+    if is_image:
+        cv2.imwrite('out_image.jpg', frame)
 
     # Release the out writer, capture, and destroy any OpenCV windows
     cap.release()
