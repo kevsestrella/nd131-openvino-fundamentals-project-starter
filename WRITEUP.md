@@ -23,7 +23,8 @@ Implement the Custom Layer Logic at IE
 
     This means we have custom operations that needs to be implemented at MO and IE.
 
-	2. Use the following script to generate the required files for Custom Layer Operation. (Install requirements with package manager of your choice.) 
+2. Use the following script to generate the required files for Custom Layer Operation. (Install requirements with package manager of your choice.) 
+	
 	`/opt/intel/openvino/deployment_tools/tools/extension_generator/extgen.py`
 
     Passing -h as an argument gives the following
@@ -54,7 +55,7 @@ Implement the Custom Layer Logic at IE
 
     Files are found at the `$OUTPUT_DIR`
 
-#### #### Custom Layer at MO:
+#### Custom Layer at MO:
 
 ​	Just provide the `user_mo_extensions` dir found inside the `$OUTPUT_DIR` of the Custom Layer Pre-work to `--extensions` argument when creating IR. This contains the files discussed above required for Custom Layer MO operation.
 
